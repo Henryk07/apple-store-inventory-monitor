@@ -274,8 +274,16 @@ fn real_us_homeview_page_parses_both_models_and_all_colors() {
             ("MDH24LL/A", "Apple HomeView Space Gray", "Space Gray"),
             ("MDH34LL/A", "Apple HomeView Starlight", "Starlight"),
             ("MDH44LL/A", "Apple HomeView Rose Pink", "Rose Pink"),
-            ("MDV64LL/A", "Apple HomeView (Wall Mounted) Silver", "Silver"),
-            ("MDV74LL/A", "Apple HomeView (Wall Mounted) Space Gray", "Space Gray"),
+            (
+                "MDV64LL/A",
+                "Apple HomeView (Wall Mounted) Silver",
+                "Silver"
+            ),
+            (
+                "MDV74LL/A",
+                "Apple HomeView (Wall Mounted) Space Gray",
+                "Space Gray"
+            ),
         ]
     );
     assert!(
@@ -287,7 +295,9 @@ fn real_us_homeview_page_parses_both_models_and_all_colors() {
     // 离线快照必须和在线解析结果一致，否则刷新前后同一零件号会换名字。
     let catalog = Catalog::new();
     for product in &products {
-        let offline = catalog.product_by_part("en_US", &product.part_number).unwrap();
+        let offline = catalog
+            .product_by_part("en_US", &product.part_number)
+            .unwrap();
         assert_eq!(offline.title, product.title);
         assert_eq!(offline.color, product.color);
     }

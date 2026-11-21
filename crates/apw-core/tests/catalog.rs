@@ -201,8 +201,16 @@ fn 美国homeview目录覆盖桌面版四色与壁挂版两色() {
         ("MDH34LL/A", "Apple HomeView Starlight", "Starlight"),
         ("MDH44LL/A", "Apple HomeView Rose Pink", "Rose Pink"),
         ("MDH24LL/A", "Apple HomeView Space Gray", "Space Gray"),
-        ("MDV64LL/A", "Apple HomeView (Wall Mounted) Silver", "Silver"),
-        ("MDV74LL/A", "Apple HomeView (Wall Mounted) Space Gray", "Space Gray"),
+        (
+            "MDV64LL/A",
+            "Apple HomeView (Wall Mounted) Silver",
+            "Silver",
+        ),
+        (
+            "MDV74LL/A",
+            "Apple HomeView (Wall Mounted) Space Gray",
+            "Space Gray",
+        ),
     ] {
         let product = catalog
             .product_by_part("en_US", part)

@@ -601,10 +601,11 @@ export default function App() {
     }));
   }, [ui.categories, ui.products]);
   useEffect(() => {
-    if (categoryOptions.length === 0) return;
+    const first = categoryOptions[0];
+    if (!first) return;
     if (categoryOptions.some((option) => option.value === ui.category)) return;
     setPartNumbers([]);
-    setCategory(categoryOptions[0].value);
+    setCategory(first.value);
   }, [categoryOptions, ui.category]);
 
   const productOptions = useMemo(

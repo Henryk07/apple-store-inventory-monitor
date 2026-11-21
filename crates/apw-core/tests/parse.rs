@@ -341,7 +341,10 @@ fn 新品实际响应保留未发售与不支持取货的原始说明() {
 
 #[test]
 fn 美国homeview寄送到店是无货并保留取货日期而不是接口漂移() {
-    assert_eq!(availability_from("ships-to-store"), Availability::OutOfStock);
+    assert_eq!(
+        availability_from("ships-to-store"),
+        Availability::OutOfStock
+    );
     let got = parse_pickup_message(
         include_bytes!("fixtures/pickup_homeview_ships_to_store.json"),
         "R085",
