@@ -11,8 +11,8 @@
   - [x] Category picker only lists categories the selected region has products for
   - [x] Tests: real-page parse fixture, ships-to-store fixture, catalog counts; JS tests pass
   - [x] Fixed CI findings: `App.tsx` possibly-undefined index (tsc), rustfmt layout in new tests
-  - [ ] macOS CI green (`pnpm test`, `tsc`, `vite build`, `cargo test`)
-  - [ ] Verified in the running app (Home tab, store picker, monitoring)
+  - [x] macOS CI green (`pnpm test`, `tsc`, `vite build`, `cargo test`) and US live contract tests 6/6
+  - [x] Verified in the running app (Home tab, store picker, monitoring) — test build from release workflow run 44954050246
   - [ ] Committed, pushed, PR, CI green, merged
 
 ## CI
