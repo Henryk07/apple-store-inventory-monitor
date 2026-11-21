@@ -216,6 +216,8 @@ pub enum Category {
     Ipad,
     Mac,
     Watch,
+    /// 家居设备（`/shop/buy-home`）。目前只有美国站的 Apple HomeView。
+    Home,
 }
 
 impl Category {
@@ -223,7 +225,7 @@ impl Category {
     ///
     /// 写成常量而不是让调用方自己列举：将来新增品类时，凡是遍历这里的地方
     /// 都会自动跟上，不会有谁悄悄漏掉一个。
-    pub const ALL: &'static [Category] = &[Self::Iphone, Self::Ipad, Self::Mac, Self::Watch];
+    pub const ALL: &[Category] = &[Self::Iphone, Self::Ipad, Self::Mac, Self::Watch, Self::Home];
 
     /// 购买页所在的路径段，如 `buy-iphone`。
     pub fn buy_path(self) -> &'static str {
@@ -232,6 +234,7 @@ impl Category {
             Self::Ipad => "buy-ipad",
             Self::Mac => "buy-mac",
             Self::Watch => "buy-watch",
+            Self::Home => "buy-home",
         }
     }
 
@@ -242,6 +245,7 @@ impl Category {
             Self::Ipad => "iPad",
             Self::Mac => "Mac",
             Self::Watch => "Apple Watch",
+            Self::Home => "Home",
         }
     }
 }
@@ -456,12 +460,28 @@ const INTERNATIONAL_FAMILIES: &[Family<'static>] = &[
     },
 ];
 
+/// 美国站：在国际版 iPhone 之外，额外监控 2026 年 11 月上市的 Apple HomeView。
+const US_FAMILIES: &[Family<'static>] = &[
+    Family {
+        category: Category::Iphone,
+        slug: "iphone-18-pro",
+    },
+    Family {
+        category: Category::Iphone,
+        slug: "iphone-duo",
+    },
+    Family {
+        category: Category::Home,
+        slug: "apple-homeview",
+    },
+];
+
 pub const REGIONS: &[Region] = &[
     Region {
         title: "United States",
         locale: "en_US",
         base_url: "https://www.apple.com",
-        families: INTERNATIONAL_FAMILIES,
+        families: US_FAMILIES,
     },
     Region {
         title: "Canada",

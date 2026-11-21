@@ -1,5 +1,11 @@
 # 更新记录
 
+## 未发布 · 美加阿修改版
+
+- 美国站新增「Home」品类，支持监控 2026-11-13 上市的 Apple HomeView：桌面版 Silver / Starlight / Rose Pink / Space Gray 与壁挂版 Silver / Space Gray 共 6 个 `LL/A` 料号；「刷新型号」同时抓取 `/shop/buy-home/apple-homeview`。加拿大、阿联酋暂不显示该品类。
+- 美国站取货查询不再携带 `pl=true`：带上它时 Apple 会把 HomeView 一律回成 `ineligible`（误报无货）；iPhone 的取货状态实测不受影响，仅不可取货的文案由「Currently unavailable」变为「Unavailable for Pickup」。
+- Apple 返回 `ships-to-store`（门店暂无、下单寄到店再取）时按无货显示并保留到店日期，不再误报「接口返回结构与预期不符」。
+
 ## 1.0.28 · 美加阿修改版
 
 - 应用、菜单栏、界面、安装镜像和项目图标统一使用左上角白色弧形地球角标。

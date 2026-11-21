@@ -15,15 +15,23 @@ use crate::model::{Availability, DeliveryRegion, PickupDetails, Region, Target, 
 
 /// Query the current retail pickup endpoint with each region's own policy.
 /// Only the US store uses the unlocked carrier policy; Canada/UAE must omit it.
+///
+/// The US store also omits `pl=true`: with it, Apple answers every non-iPhone
+/// part (Apple HomeView) with `pickupDisplay=ineligible`, which would read as
+/// out of stock, while the same request without it returns the real
+/// `ships-to-store` / `available` state. Verified 2026-11-20 against US stores
+/// that iPhone pickup states are identical either way; only the quote wording
+/// changes ("Unavailable for Pickup" instead of "Currently unavailable").
 pub fn pickup_query_for_scope(
     region: &Region,
     scope: (&str, &str),
     parts: &[String],
 ) -> Vec<(String, String)> {
-    let mut pairs = vec![
-        ("pl".into(), "true".into()),
-        ("mts.0".into(), "regular".into()),
-    ];
+    let mut pairs: Vec<(String, String)> = Vec::new();
+    if region.locale != "en_US" {
+        pairs.push(("pl".into(), "true".into()));
+    }
+    pairs.push(("mts.0".into(), "regular".into()));
     pairs.push((scope.0.into(), scope.1.into()));
     pairs.extend(
         parts
@@ -883,7 +891,10 @@ fn check_envelope(resp: &PickupResponse) -> Result<(), ApiError> {
 ///
 /// 已实际观测到的取值：`available`（可取货）、`unavailable`（不可取货）、
 /// `ineligible`（该型号在此门店不支持到店取货）、`default`（新品的取货状态
-/// 尚待开放或公布，具体说明由 `pickupQuote` 提供）。
+/// 尚待开放或公布，具体说明由 `pickupQuote` 提供）、`ships-to-store`（门店
+/// 现在没有，下单后寄到门店再取，`pickupSearchQuote` 给出日期，例如美国站
+/// Apple HomeView 的「Available Tue, Jan 5」）。最后一种不是「现在能取」，
+/// 但 Apple 明确回答了，按无货处理并保留原始日期说明。
 ///
 /// 未知取值一律归为 `Unknown` 并带上原始值，而不是 `OutOfStock` —— 猜错成
 /// 「无货」会让用户错过机会，猜错成「未知」只是让用户多看一眼。同样重要的是，
@@ -892,7 +903,7 @@ fn check_envelope(resp: &PickupResponse) -> Result<(), ApiError> {
 pub fn availability_from(pickup_display: &str) -> Availability {
     match pickup_display.trim().to_ascii_lowercase().as_str() {
         "available" => Availability::InStock,
-        "unavailable" | "ineligible" => Availability::OutOfStock,
+        "unavailable" | "ineligible" | "ships-to-store" => Availability::OutOfStock,
         "default" => Availability::Unknown(UnknownReason::PickupPending),
         other => Availability::Unknown(UnknownReason::SchemaDrift {
             field: "pickupDisplay".into(),

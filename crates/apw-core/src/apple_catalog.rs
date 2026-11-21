@@ -142,6 +142,9 @@ pub fn parse_family_links(
             Category::Iphone => slug.starts_with("iphone"),
             Category::Ipad => slug.starts_with("ipad"),
             Category::Watch => slug.starts_with("apple-watch"),
+            // buy-home 入口还可能挂 HomePod、Apple TV 等不走同一套数据的页面，
+            // 只认 HomeView，避免把整个品类刷新拖进失败。
+            Category::Home => slug.starts_with("apple-homeview"),
             Category::Mac => {
                 slug.starts_with("mac") || slug == "imac" || slug.starts_with("studio-display")
             }
@@ -783,8 +786,20 @@ impl ProductSelection {
             // 展示名优先按 familyType 拼：同一页里的 Pro 与 Pro Max 只有它能分开。
             // Mac 与 Apple Watch 的数据里没有这个字段，退回购买页 slug。
             let decoded_family = family_display_name(family_type);
+            // HomeView 的机型（桌面版 / 壁挂版）只写在 dimensionMerchModel 里，
+            // 文案本身就是完整机型名「Apple HomeView (Wall Mounted)」，直接用作
+            // 展示名开头，不再当作一项规格重复拼接。
+            let home_model = (category == Category::Home)
+                .then(|| {
+                    item.dimensions()
+                        .iter()
+                        .find(|d| d.name == HOME_MODEL_DIMENSION)
+                        .and_then(|d| self.display_name(d.key, d.value))
+                })
+                .flatten();
             let display_family = watch_model
                 .clone()
+                .or_else(|| home_model.clone())
                 .or_else(|| decoded_family.clone())
                 .unwrap_or_else(|| slug_display_name(slug));
 
@@ -823,6 +838,9 @@ impl ProductSelection {
                 // iPad Pro 11），再拼一遍就成了「iPad Pro 11 11 英寸机型」。
                 // 退回 slug 的那些品类没这个问题，尺寸必须从维度里补。
                 if dim.name == "dimensionScreensize" && decoded_family.is_some() {
+                    continue;
+                }
+                if dim.name == HOME_MODEL_DIMENSION && home_model.is_some() {
                     continue;
                 }
 
@@ -1285,7 +1303,9 @@ fn plain_text(html: &str) -> String {
 
     segments
         .into_iter()
-        .map(|s| collapse_whitespace(&decode_entities(&s)))
+        // Apple 会在机型名后面黏一个零宽连接符（`Apple HomeView\u{200d}`）防止
+        // 断行，留在展示名里会让两条看起来一样的标题不相等。
+        .map(|s| collapse_whitespace(&decode_entities(&s).replace(ZERO_WIDTH, "")))
         .find(|s| !s.is_empty())
         .unwrap_or_default()
 }
@@ -1441,6 +1461,12 @@ const FAMILY_WORDS: &[(&str, &str)] = &[
     ("e", "e"),
 ];
 
+/// HomeView 购买页区分桌面版与壁挂版的维度。
+const HOME_MODEL_DIMENSION: &str = "dimensionMerchModel";
+
+/// 展示文案里不该保留的零宽字符。
+const ZERO_WIDTH: [char; 4] = ['\u{200b}', '\u{200c}', '\u{200d}', '\u{feff}'];
+
 /// 能被拆成人话的机型标识前缀。
 const FAMILY_PREFIXES: &[(&str, &str)] = &[("iphone", "iPhone"), ("ipad", "iPad")];
 
@@ -1551,6 +1577,7 @@ const SLUG_WORDS: &[(&str, &str)] = &[
     ("mini", "mini"),
     ("se", "SE"),
     ("ultra", "Ultra"),
+    ("homeview", "HomeView"),
     ("studio", "Studio"),
     ("xdr", "XDR"),
     ("hermes", "Hermès"),

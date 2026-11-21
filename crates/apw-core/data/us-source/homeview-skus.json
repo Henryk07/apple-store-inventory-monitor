@@ -1,0 +1,8 @@
+[
+  { "sku": "MDH14", "partNumber": "MDH14LL/A", "model": "Apple HomeView", "color": "Silver", "name": "Apple HomeView - Silver", "price": 299 },
+  { "sku": "MDH34", "partNumber": "MDH34LL/A", "model": "Apple HomeView", "color": "Starlight", "name": "Apple HomeView - Starlight", "price": 299 },
+  { "sku": "MDH44", "partNumber": "MDH44LL/A", "model": "Apple HomeView", "color": "Rose Pink", "name": "Apple HomeView - Rose Pink", "price": 299 },
+  { "sku": "MDH24", "partNumber": "MDH24LL/A", "model": "Apple HomeView", "color": "Space Gray", "name": "Apple HomeView - Space Gray", "price": 299 },
+  { "sku": "MDV64", "partNumber": "MDV64LL/A", "model": "Apple HomeView (Wall Mounted)", "color": "Silver", "name": "Apple HomeView (Wall Mounted) - Silver", "price": 299 },
+  { "sku": "MDV74", "partNumber": "MDV74LL/A", "model": "Apple HomeView (Wall Mounted)", "color": "Space Gray", "name": "Apple HomeView (Wall Mounted) - Space Gray", "price": 299 }
+]

@@ -340,6 +340,33 @@ fn 新品实际响应保留未发售与不支持取货的原始说明() {
 }
 
 #[test]
+fn 美国homeview寄送到店是无货并保留取货日期而不是接口漂移() {
+    assert_eq!(
+        availability_from("ships-to-store"),
+        Availability::OutOfStock
+    );
+    let got = parse_pickup_message(
+        include_bytes!("fixtures/pickup_homeview_ships_to_store.json"),
+        "R085",
+    )
+    .unwrap();
+    for part_number in ["MDH14LL/A", "MDV64LL/A"] {
+        let part = &got.parts[part_number];
+        assert_eq!(part.availability, Availability::OutOfStock, "{part_number}");
+        let detail = part.pickup_details.as_ref().unwrap();
+        assert_eq!(detail.pickup_display, "ships-to-store");
+        assert!(
+            detail
+                .pickup_quote
+                .as_deref()
+                .is_some_and(|quote| quote.ends_with(" at Apple Barton Creek")),
+            "{part_number} 应保留 Apple 的到店日期：{:?}",
+            detail.pickup_quote
+        );
+    }
+}
+
+#[test]
 fn 送货数据缺失或形状变化不阻止有效取货判定() {
     let raw = response(&part("available"));
     let got = parse_pickup_message(raw.as_bytes(), "R683").unwrap();

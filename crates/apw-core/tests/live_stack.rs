@@ -28,8 +28,8 @@ use apw_core::watcher::{Event, Watcher, WatcherConfig};
 async fn 全栈跑通一轮真实监控() {
     let catalog = Catalog::new();
 
-    let stores = catalog.stores("zh_CN").expect("内嵌门店目录应当可用");
-    let products = catalog.products("zh_CN").expect("内嵌商品目录应当可用");
+    let stores = catalog.stores("en_US").expect("内嵌门店目录应当可用");
+    let products = catalog.products("en_US").expect("内嵌商品目录应当可用");
     assert!(!stores.is_empty(), "门店目录是空的");
     assert!(!products.is_empty(), "商品目录是空的");
 
@@ -41,7 +41,7 @@ async fn 全栈跑通一轮真实监控() {
     for store in picked_stores {
         for product in picked_products {
             targets.push(Target {
-                locale: "zh_CN".into(),
+                locale: "en_US".into(),
                 store_number: store.number.clone(),
                 store_title: store.title.clone(),
                 part_number: product.part_number.clone(),
@@ -49,7 +49,7 @@ async fn 全栈跑通一轮真实监控() {
                 companion_part: None,
                 companion_name: None,
                 kit_part: None,
-                pickup_location: store.pickup_location("zh_CN"),
+                pickup_location: store.pickup_location("en_US"),
             });
         }
     }
@@ -139,13 +139,14 @@ async fn 全栈跑通一轮真实监控() {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn 同店一个候选有货后仍会继续检查全部候选() {
-    let parts = ["MG724CH/A", "MG0A4CH/A", "MG364CH/A"];
+    // 美国 Barton Creek 店：iPhone 18 Pro Max、iPhone Duo 与 Apple HomeView 各一个。
+    let parts = ["MJWD4LL/A", "MK1F4LL/A", "MDH14LL/A"];
     let targets: Vec<Target> = parts
         .iter()
         .map(|part| Target {
-            locale: "zh_CN".into(),
-            store_number: "R390".into(),
-            store_title: "上海-香港广场".into(),
+            locale: "en_US".into(),
+            store_number: "R085".into(),
+            store_title: "Barton Creek".into(),
             part_number: (*part).into(),
             product_name: (*part).into(),
             companion_part: None,
@@ -205,7 +206,7 @@ async fn 同店一个候选有货后仍会继续检查全部候选() {
 #[tokio::test(flavor = "multi_thread")]
 async fn 能从官网抓到最新型号() {
     let catalog = Catalog::new();
-    let region = region_by_locale("zh_CN").expect("地区表里应当有中国大陆");
+    let region = region_by_locale("en_US").expect("地区表里应当有美国站");
 
     let http = reqwest::Client::builder()
         .timeout(Duration::from_secs(30))
@@ -213,8 +214,11 @@ async fn 能从官网抓到最新型号() {
         .expect("构造 http 客户端失败");
 
     for category in Category::ALL {
+        if region.families_in(*category).next().is_none() {
+            continue;
+        }
         let before = catalog
-            .products("zh_CN")
+            .products("en_US")
             .map(|p| p.iter().filter(|p| p.category == *category).count())
             .unwrap_or(0);
 
@@ -227,7 +231,7 @@ async fn 能从官网抓到最新型号() {
         assert!(count > 0, "{} 在线刷新返回 0 个型号", category.title());
 
         let after: Vec<_> = catalog
-            .products("zh_CN")
+            .products("en_US")
             .expect("刷新后目录应当可用")
             .into_iter()
             .filter(|p| p.category == *category)
@@ -260,19 +264,19 @@ async fn 能从官网抓到最新型号() {
 /// 门店列表页是门店在线刷新的唯一来源。它的结构一旦变化，门店就只能停留在
 /// 缓存或内嵌快照上，这里要第一时间发现。
 #[tokio::test(flavor = "multi_thread")]
-async fn 能从官网门店列表页刷新七个地区的门店() {
+async fn 能从官网门店列表页刷新美国站门店() {
     let catalog = Catalog::new();
     let http = reqwest::Client::builder()
         .timeout(Duration::from_secs(30))
         .build()
         .expect("构造 http 客户端失败");
 
-    let region = region_by_locale("zh_CN").expect("地区表里应当有中国大陆");
+    let region = region_by_locale("en_US").expect("地区表里应当有美国站");
     let count = catalog
         .refresh_stores(region, &http)
         .await
         .unwrap_or_else(|e| panic!("门店列表页刷新失败，页面结构可能已变：{e}"));
-    assert!(count > 30, "中国大陆只刷新到 {count} 家门店");
+    assert!(count > 200, "美国站只刷新到 {count} 家门店");
 
     for region in apw_core::model::REGIONS {
         let stores = catalog.stores(region.locale).expect("门店目录应当可用");
