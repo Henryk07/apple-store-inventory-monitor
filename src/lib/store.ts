@@ -697,7 +697,7 @@ export function dismissUpdate(): void {
 /** 自动更新不可用时，打开本项目的完整安装包下载页。 */
 export async function openReleasePage(): Promise<void> {
   try {
-    await openUrl("https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases/latest");
+    await openUrl("https://github.com/Henryk07/apple-store-inventory-monitor/releases/latest");
   } catch (err) {
     update({ updateError: `无法打开下载页：${String(err)}` });
   }
@@ -711,17 +711,12 @@ async function openCommunityPage(url: string, label: string): Promise<void> {
   }
 }
 
-/** 打开上游开源仓库主页，供查看原始源码与许可证。 */
+/** 打开本修改版（Henryk07 维护的 fork）的 GitHub 项目页。 */
 export function openProjectPage(): Promise<void> {
   return openCommunityPage(
-    "https://github.com/yuanruoyu515/apple-store-inventory-monitor",
+    "https://github.com/Henryk07/apple-store-inventory-monitor",
     "GitHub 修改版项目页",
   );
-}
-
-/** 打开修改版维护者的 Threads 主页。 */
-export function openAuthorPage(): Promise<void> {
-  return openCommunityPage("https://www.threads.com/@realtimyry", "Threads 主页");
 }
 
 /** Preserve the upstream source and author credit. */

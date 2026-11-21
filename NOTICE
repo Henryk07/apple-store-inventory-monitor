@@ -295,3 +295,22 @@ The adapted raster master was produced with OpenAI image_gen and is stored in
 assets/icon.png. Derived app, tray and frontend icons are generated from that
 master with the Tauri icon utility. Earlier icon and project attribution above
 continues to apply. No affiliation with Bilibili or Apple is implied.
+
+Henryk07 fork with Apple HomeView support (2026-11-21)
+------------------------------------------------------------
+
+This repository is a fork of yuanruoyu515/apple-store-inventory-monitor
+(https://github.com/yuanruoyu515/apple-store-inventory-monitor), maintained by
+Henryk07: https://github.com/Henryk07/apple-store-inventory-monitor
+
+Modified by Henryk07. Version 2.0.0 (tag v2.0.0-us.1) adds a Home category for the US store with six Apple
+HomeView LL/A part numbers taken from Apple's public US purchase page, omits
+pl=true from US pickup queries (it made Apple report HomeView as ineligible),
+treats Apple's ships-to-store pickup state as out of stock while keeping the
+pickup date, and lists only the categories a selected region carries. CI runs
+on macOS only, and the live contract tests use the US store. Maintainer and
+download links in the documentation and app now point to this fork.
+
+The statements above by suversal, yuanruoyu515 and earlier authors are kept
+as historical notices. This fork does not claim authorship of their work and
+continues under GPL-3.0-or-later.

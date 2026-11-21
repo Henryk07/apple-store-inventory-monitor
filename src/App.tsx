@@ -78,7 +78,6 @@ import {
   loadDeliveryLocalities,
   loadWatchBandChoices,
   loadWatchBandSizes,
-  openAuthorPage,
   openProjectPage,
   openUpstreamPage,
   openReleasePage,
@@ -754,17 +753,14 @@ export default function App() {
                   </span>
                 </div>
                 <p className="mt-0.5 truncate text-sm text-muted-foreground">
-                  美国 / 加拿大 / 阿联酋 · iPhone 库存监控
+                  美国 / 加拿大 / 阿联酋 · iPhone 与 HomeView 库存监控
                 </p>
               </div>
             </div>
 
             <nav aria-label="修改版维护者与开源项目" className="col-span-2 row-start-2 flex flex-wrap items-center gap-2 border-t border-border/60 pt-3 min-[1180px]:col-span-1 min-[1180px]:col-start-2 min-[1180px]:row-start-1 min-[1180px]:justify-center min-[1180px]:border-0 min-[1180px]:pt-0">
-              <Button variant="outline" size="sm" className="h-8 rounded-full px-3 text-xs" onClick={() => void openProjectPage()} aria-label="GitHub：yuanruoyu515 的修改版与下载">
-                <GithubBrandIcon /> yuanruoyu515
-              </Button>
-              <Button variant="outline" size="sm" className="h-8 rounded-full px-3 text-xs" onClick={() => void openAuthorPage()} aria-label="Threads：@realtimyry">
-                Threads · @realtimyry
+              <Button variant="outline" size="sm" className="h-8 rounded-full px-3 text-xs" onClick={() => void openProjectPage()} aria-label="GitHub：Henryk07 的修改版与下载">
+                <GithubBrandIcon /> Henryk07
               </Button>
               <Button variant="ghost" size="sm" className="h-8 rounded-full px-2 text-xs text-muted-foreground" onClick={() => void openUpstreamPage()}>
                 上游源码

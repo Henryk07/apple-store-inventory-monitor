@@ -1,7 +1,10 @@
 # 更新记录
 
-## 未发布 · 美加阿修改版
+## 2.0.0 · 美加阿修改版（Henryk07 fork）
 
+- 本仓库改由 Henryk07 维护（fork 自 yuanruoyu515 的美加阿版）：README、地区说明、`NOTICE`、`Cargo.toml` 以及 App 顶部的维护者按钮与「下载更新」链接改为指向本 fork；原 Threads 按钮移除，保留「上游源码」入口。suversal 与 yuanruoyu515 的署名和历史修改声明全部保留。
+- App 副标题改为「iPhone 与 HomeView 库存监控」。
+- CI 只在 macOS 上运行，Apple 接口契约测试改用美国站。
 - 美国站新增「Home」品类，支持监控 2026-11-13 上市的 Apple HomeView：桌面版 Silver / Starlight / Rose Pink / Space Gray 与壁挂版 Silver / Space Gray 共 6 个 `LL/A` 料号；「刷新型号」同时抓取 `/shop/buy-home/apple-homeview`。加拿大、阿联酋暂不显示该品类。
 - 美国站取货查询不再携带 `pl=true`：带上它时 Apple 会把 HomeView 一律回成 `ineligible`（误报无货）；iPhone 的取货状态实测不受影响，仅不可取货的文案由「Currently unavailable」变为「Unavailable for Pickup」。
 - Apple 返回 `ships-to-store`（门店暂无、下单寄到店再取）时按无货显示并保留到店日期，不再误报「接口返回结构与预期不符」。
