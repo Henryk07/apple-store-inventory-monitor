@@ -4,7 +4,7 @@
 
 完整介绍、界面截图与下载安装入口见 **[美加修改版首页](README.md)**。v1.0.9 起同一应用增加加拿大支持，详见 [加拿大说明](README_CA.md)。本版由 [yuanruoyu515](https://github.com/yuanruoyu515) 维护，联系与反馈：[Threads @realtimyry](https://www.threads.com/@realtimyry)。下文保留美国适配细节、SKU 与构建说明。
 
-当前美加阿版为 **v1.0.28-us.1**，基于上游 `Apple Store Inventory Monitor` v1.0.26，美国部分继续支持 iPhone Duo、iPhone 18 Pro 与 iPhone 18 Pro Max 到店取货库存监控。保留 `US` 文件名、Bundle ID 与配置目录，兼容旧版覆盖升级。
+当前美加阿版为 **v1.0.28-us.1**，基于上游 `Apple Store Inventory Monitor` v1.0.26，美国部分继续支持 iPhone Duo、iPhone 18 Pro 与 iPhone 18 Pro Max 到店取货库存监控，并新增 Apple HomeView。保留 `US` 文件名、Bundle ID 与配置目录，兼容旧版覆盖升级。
 
 从 [GitHub Release](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases/latest) 下载：Apple 芯片与 Intel Mac 使用同一个 `macOS-universal` DMG，打开通用 DMG 后把 App 拖到 Applications 快捷图标。
 
@@ -18,7 +18,7 @@
    ```
 
 3. 地区默认是 `United States`。门店搜索支持州、城市、店名或门店编号。
-4. 选择一个或多个门店，再选择 iPhone Duo / 18 Pro / Pro Max 的容量与颜色，点击“添加监控”。可在型号搜索框输入 `Duo` 筛选新机型。
+4. 选择一个或多个门店，再选择 iPhone Duo / 18 Pro / Pro Max 的容量与颜色，点击“添加监控”。可在型号搜索框输入 `Duo` 筛选新机型。监控 Apple HomeView 时先把「品类」切换为 Home。
 5. 可填写 Bark 地址（例如 `https://api.day.app/你的密钥`），再点“测试提醒与跳转”。
 6. 点击“开始监控”。关闭主窗口后应用会留在菜单栏继续监控；彻底退出、电脑休眠或关机后会停止。
 
@@ -30,7 +30,8 @@
 - 内置 269 家美国 Apple Store，门店标题同时包含州与城市。
 - 内置 40 个美国 `LL/A` SKU：32 个 iPhone 18 Pro / Pro Max 配置，以及 8 个 iPhone Duo 配置。
 - iPhone Duo 支持 256GB、512GB、1TB、2TB，颜色为 Night Sky 与 Star White；“刷新型号”也包含 Duo 购买页。
-- 美国查询携带 Apple 的 `UNLOCKED/US` 配置参数。
+- 内置 6 个 Apple HomeView `LL/A` SKU（品类 Home），“刷新型号”同时抓取 HomeView 购买页。
+- 美国查询携带 Apple 的 `UNLOCKED/US` 配置参数，但不带 `pl=true`（带上会让 HomeView 被误判为 `ineligible`）。
 - 使用独立配置目录和 Bundle ID，不覆盖原版配置。
 - 禁用上游自动更新检查，避免美国支持被正式版覆盖。
 
@@ -48,6 +49,17 @@
 | 512GB | `MK1H4LL/A` | `MK1G4LL/A` |
 | 1TB | `MK1L4LL/A` | `MK1J4LL/A` |
 | 2TB | `MK1R4LL/A` | `MK1Q4LL/A` |
+
+## Apple HomeView 美国配置
+
+2026-11-20 从 [Apple 美国官方购买页](https://www.apple.com/shop/buy-home/apple-homeview) 的 `productSelectionData` 核对，原始快照位于 `crates/apw-core/data/us-source/homeview-skus.json`。
+
+| 机型 | Silver | Starlight | Rose Pink | Space Gray |
+| --- | --- | --- | --- | --- |
+| Apple HomeView | `MDH14LL/A` | `MDH34LL/A` | `MDH44LL/A` | `MDH24LL/A` |
+| Apple HomeView (Wall Mounted) | `MDV64LL/A` | — | — | `MDV74LL/A` |
+
+截至 2026-11-20，多数美国门店对 HomeView 返回 `pickupDisplay: ships-to-store`（例如 `Available Tue, Jan 5`），表示门店现在没有、下单后寄到门店再取。程序把它显示为无货并保留 Apple 给出的到店日期；门店真正返回 `available` 时才提醒。
 
 ## 从源码构建
 

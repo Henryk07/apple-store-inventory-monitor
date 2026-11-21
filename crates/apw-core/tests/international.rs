@@ -28,19 +28,31 @@ fn international_catalogs_and_policies_do_not_cross_regions() {
         assert_eq!(catalog.stores(locale).unwrap().len(), count);
         assert!(catalog.store_by_number(locale, store).is_some());
         let products = catalog.products(locale).unwrap();
-        assert_eq!(products.len(), 40);
+        // 美国站额外上架 6 个 Apple HomeView；加拿大、阿联酋只有 iPhone。
+        let home = usize::from(locale == "en_US") * 6;
+        assert_eq!(products.len(), 40 + home);
         assert_eq!(
             products
                 .iter()
                 .map(|p| &p.part_number)
                 .collect::<HashSet<_>>()
                 .len(),
-            40
+            40 + home
         );
-        assert!(
+        assert!(products.iter().all(|p| p.part_number.ends_with(suffix)));
+        assert_eq!(
             products
                 .iter()
-                .all(|p| p.part_number.ends_with(suffix) && p.category == Category::Iphone)
+                .filter(|p| p.category == Category::Iphone)
+                .count(),
+            40
+        );
+        assert_eq!(
+            products
+                .iter()
+                .filter(|p| p.category == Category::Home)
+                .count(),
+            home
         );
         let parts = vec![products[0].part_number.clone()];
         for query in [
@@ -52,6 +64,11 @@ fn international_catalogs_and_policies_do_not_cross_regions() {
                 usize::from(locale == "en_US")
             );
             assert!(query.contains(&("parts.0".into(), parts[0].clone())));
+            // pl=true 会让美国站把 HomeView 判成 ineligible（误报无货）。
+            assert_eq!(
+                query.iter().filter(|(key, _)| key == "pl").count(),
+                usize::from(locale != "en_US")
+            );
         }
         let mut settings = Settings {
             locale: locale.into(),

@@ -193,6 +193,10 @@ async fn 四个品类的零件号接口都认() {
     let products = catalog.products("zh_CN").expect("内嵌目录应当可用");
 
     for category in Category::ALL {
+        // Home（Apple HomeView）只接入美国站；中国大陆没有这个品类的购买页。
+        if region.families_in(*category).next().is_none() {
+            continue;
+        }
         let product = products
             .iter()
             .find(|p| p.category == *category)

@@ -100,6 +100,7 @@ fn expected_prefix(category: Category) -> &'static str {
         Category::Ipad => "iPad",
         Category::Mac => "",
         Category::Watch => "Apple Watch",
+        Category::Home => "Apple HomeView",
     }
 }
 
@@ -140,7 +141,7 @@ fn 美国目录包含全部门店与iphone配置() {
     assert!(west_14th.title.contains("West 14th Street"));
 
     let products = catalog.products("en_US").expect("美国商品目录应当可用");
-    assert_eq!(products.len(), 40);
+    assert_eq!(products.len(), 46, "40 个 iPhone + 6 个 Apple HomeView");
     let silver = catalog
         .product_by_part("en_US", "MJQ44LL/A")
         .expect("美国目录应当包含 iPhone 18 Pro 256GB Silver");
@@ -183,6 +184,56 @@ fn 美国duo目录覆盖四种容量两种颜色且料号匹配官方配置() {
             .families_in(Category::Iphone)
             .any(|family| family.slug == "iphone-duo")
     );
+}
+
+#[test]
+fn 美国homeview目录覆盖桌面版四色与壁挂版两色() {
+    let catalog = Catalog::new();
+    let products = catalog.products("en_US").expect("美国商品目录应当可用");
+    let home: Vec<_> = products
+        .iter()
+        .filter(|p| p.category == Category::Home)
+        .collect();
+    assert_eq!(home.len(), 6);
+
+    for (part, title, color) in [
+        ("MDH14LL/A", "Apple HomeView Silver", "Silver"),
+        ("MDH34LL/A", "Apple HomeView Starlight", "Starlight"),
+        ("MDH44LL/A", "Apple HomeView Rose Pink", "Rose Pink"),
+        ("MDH24LL/A", "Apple HomeView Space Gray", "Space Gray"),
+        ("MDV64LL/A", "Apple HomeView (Wall Mounted) Silver", "Silver"),
+        ("MDV74LL/A", "Apple HomeView (Wall Mounted) Space Gray", "Space Gray"),
+    ] {
+        let product = catalog
+            .product_by_part("en_US", part)
+            .expect("HomeView SKU 应在离线目录中");
+        assert_eq!(product.category, Category::Home);
+        assert_eq!(product.family, "homeview");
+        assert_eq!(product.title, title);
+        assert_eq!(product.color, color);
+        assert!(product.capacity.is_empty());
+    }
+
+    let us = region_by_locale("en_US").unwrap();
+    assert_eq!(
+        us.families_in(Category::Home)
+            .map(|f| us.buy_page_url(f))
+            .collect::<Vec<_>>(),
+        vec!["https://www.apple.com/shop/buy-home/apple-homeview"]
+    );
+    // HomeView 目前只接入美国站，其他地区不应出现空的 Home 品类。
+    for locale in ["en_CA", "en_AE", "zh_CN"] {
+        let region = region_by_locale(locale).unwrap();
+        assert_eq!(region.families_in(Category::Home).count(), 0, "{locale}");
+        assert!(
+            !catalog
+                .products(locale)
+                .unwrap()
+                .iter()
+                .any(|p| p.category == Category::Home),
+            "{locale}"
+        );
+    }
 }
 
 #[test]

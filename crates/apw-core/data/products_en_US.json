@@ -361,5 +361,73 @@
         }
       }
     }
+  },
+  {
+    "category": "home",
+    "family": "apple-homeview",
+    "data": {
+      "products": [
+        {
+          "partNumber": "MDH14LL/A",
+          "familyType": "homeview",
+          "dimensionMerchModel": "homeview_standalone",
+          "dimensionColor": "silver"
+        },
+        {
+          "partNumber": "MDH34LL/A",
+          "familyType": "homeview",
+          "dimensionMerchModel": "homeview_standalone",
+          "dimensionColor": "starlight"
+        },
+        {
+          "partNumber": "MDH44LL/A",
+          "familyType": "homeview",
+          "dimensionMerchModel": "homeview_standalone",
+          "dimensionColor": "rosepink"
+        },
+        {
+          "partNumber": "MDH24LL/A",
+          "familyType": "homeview",
+          "dimensionMerchModel": "homeview_standalone",
+          "dimensionColor": "space_gray"
+        },
+        {
+          "partNumber": "MDV64LL/A",
+          "familyType": "homeview",
+          "dimensionMerchModel": "homeview_wallmount",
+          "dimensionColor": "silver"
+        },
+        {
+          "partNumber": "MDV74LL/A",
+          "familyType": "homeview",
+          "dimensionMerchModel": "homeview_wallmount",
+          "dimensionColor": "space_gray"
+        }
+      ],
+      "displayValues": {
+        "dimensionMerchModel": {
+          "homeview_standalone": {
+            "value": "Apple HomeView"
+          },
+          "homeview_wallmount": {
+            "value": "Apple HomeView (Wall Mounted)"
+          }
+        },
+        "dimensionColor": {
+          "silver": {
+            "value": "Silver"
+          },
+          "starlight": {
+            "value": "Starlight"
+          },
+          "rosepink": {
+            "value": "Rose Pink"
+          },
+          "space_gray": {
+            "value": "Space Gray"
+          }
+        }
+      }
+    }
   }
 ]

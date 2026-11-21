@@ -57,11 +57,11 @@
 
 | 地区 | 内置 Apple Store | iPhone 配置 | 地区料号 |
 | :--- | ---: | ---: | :--- |
-| United States / 美国 | 269 家 | 40 个 | `LL/A` |
+| United States / 美国 | 269 家 | 46 个 | `LL/A` |
 | Canada / 加拿大 | 28 家 | 40 个 | `VC/A` |
 | United Arab Emirates / 阿联酋 | 5 家 | 40 个 | `AH/A` |
 
-三国均包含 **iPhone Duo、iPhone 18 Pro、iPhone 18 Pro Max** 的容量与颜色组合。各国使用独立料号、当地查询入口及购物袋，美国以外不携带美国运营商参数。
+三国均包含 **iPhone Duo、iPhone 18 Pro、iPhone 18 Pro Max** 的容量与颜色组合；美国另含 **Apple HomeView**（桌面版 4 色、壁挂版 2 色，在「品类」中选择 Home）。各国使用独立料号、当地查询入口及购物袋，美国以外不携带美国运营商参数。
 
 阿联酋目录包括 **Dubai Mall、Mall of the Emirates、Al Maryah Island、Yas Mall、Al Jimi Mall**。门店和型号来自 Apple 官方公开页面，目录快照不代表当前库存。
 

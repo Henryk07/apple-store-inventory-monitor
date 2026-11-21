@@ -589,6 +589,24 @@ export default function App() {
     () => ui.stores.map((store) => ({ value: store.number, label: store.title })),
     [ui.stores],
   );
+  // 品类表是整个版本共用的，但不是每个地区都卖每个品类（HomeView 目前只接入
+  // 美国站）。只列出当前地区目录里真有商品的品类；目录还没载入时先不过滤。
+  const categoryOptions = useMemo(() => {
+    const available = ui.categories.filter((category) =>
+      ui.products.some((product) => product.category === category.value),
+    );
+    return (available.length > 0 ? available : ui.categories).map((category) => ({
+      value: category.value,
+      label: category.title,
+    }));
+  }, [ui.categories, ui.products]);
+  useEffect(() => {
+    if (categoryOptions.length === 0) return;
+    if (categoryOptions.some((option) => option.value === ui.category)) return;
+    setPartNumbers([]);
+    setCategory(categoryOptions[0].value);
+  }, [categoryOptions, ui.category]);
+
   const productOptions = useMemo(
     () =>
       ui.products
@@ -910,7 +928,7 @@ export default function App() {
                     </Label>
                     <Combobox
                       className="control-surface w-full"
-                      options={ui.categories.map((category) => ({ value: category.value, label: category.title }))}
+                      options={categoryOptions}
                       value={ui.category}
                       onChange={(value) => {
                         setPartNumbers([]);

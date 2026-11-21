@@ -6,10 +6,11 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dataDir = path.join(root, "crates", "apw-core", "data");
 const sourceDir = path.join(dataDir, "us-source");
 
-const [storesSource, proSkus, duoSkus, currentRegions] = await Promise.all([
+const [storesSource, proSkus, duoSkus, homeViewSkus, currentRegions] = await Promise.all([
   readFile(path.join(sourceDir, "us-apple-stores.json"), "utf8").then(JSON.parse),
   readFile(path.join(sourceDir, "iphone-18-skus.json"), "utf8").then(JSON.parse),
   readFile(path.join(sourceDir, "iphone-duo-skus.json"), "utf8").then(JSON.parse),
+  readFile(path.join(sourceDir, "homeview-skus.json"), "utf8").then(JSON.parse),
   readFile(path.join(dataDir, "stores.json"), "utf8").then(JSON.parse),
 ]);
 
@@ -95,9 +96,49 @@ const productSnapshot = [
   return { category: "iphone", family, data: { products, displayValues } };
 });
 
+// HomeView 的购买页用 dimensionMerchModel 区分桌面版与壁挂版，颜色键沿用
+// Apple 页面里的写法（space_gray 带下划线，rosepink 不带），这样离线快照与
+// 在线刷新解析出的商品完全一致。
+const homeViewModels = {
+  "Apple HomeView": "homeview_standalone",
+  "Apple HomeView (Wall Mounted)": "homeview_wallmount",
+};
+const homeViewColor = (color) => (color === "Space Gray" ? "space_gray" : normalized(color));
+const homeViewProducts = homeViewSkus.map((sku) => {
+  const merchModel = homeViewModels[sku.model];
+  if (!merchModel || !sku.partNumber.endsWith("LL/A") || seenParts.has(sku.partNumber)) {
+    throw new Error(`Invalid or duplicate US SKU: ${sku.partNumber} (${sku.model})`);
+  }
+  seenParts.add(sku.partNumber);
+  return {
+    partNumber: sku.partNumber,
+    familyType: "homeview",
+    dimensionMerchModel: merchModel,
+    dimensionColor: homeViewColor(sku.color),
+  };
+});
+productSnapshot.push({
+  category: "home",
+  family: "apple-homeview",
+  data: {
+    products: homeViewProducts,
+    displayValues: {
+      dimensionMerchModel: Object.fromEntries(
+        Object.entries(homeViewModels).map(([name, key]) => [key, { value: name }]),
+      ),
+      dimensionColor: Object.fromEntries(
+        [...new Set(homeViewSkus.map((sku) => sku.color))]
+          .map((color) => [homeViewColor(color), { value: color }]),
+      ),
+    },
+  },
+});
+
 await writeFile(
   path.join(dataDir, "products_en_US.json"),
   `${JSON.stringify(productSnapshot, null, 2)}\n`,
 );
 
-console.log(`Generated ${storesSource.length} US stores and ${seenParts.size} iPhone SKUs.`);
+console.log(
+  `Generated ${storesSource.length} US stores, ${seenParts.size - homeViewProducts.length} iPhone SKUs and ${homeViewProducts.length} HomeView SKUs.`,
+);

@@ -254,3 +254,56 @@ fn watch_configuration_links_are_normalized_to_family_pages() {
         vec!["apple-watch-hermes-ultra", "apple-watch-ultra"]
     );
 }
+
+#[test]
+fn real_us_homeview_page_parses_both_models_and_all_colors() {
+    let page = include_bytes!("fixtures/buy_home_apple_homeview_us.html");
+    let mut products =
+        apw_core::apple_catalog::parse_buy_page(page, Category::Home, "apple-homeview").unwrap();
+    products.sort_by(|a, b| a.part_number.cmp(&b.part_number));
+    let got: Vec<_> = products
+        .iter()
+        .map(|p| (p.part_number.as_str(), p.title.as_str(), p.color.as_str()))
+        .collect();
+    // 机型名来自 dimensionMerchModel 的官网文案：脚注、&nbsp; 与零宽连接符都要去掉，
+    // 且不能再把机型名当规格重复拼一遍。
+    assert_eq!(
+        got,
+        vec![
+            ("MDH14LL/A", "Apple HomeView Silver", "Silver"),
+            ("MDH24LL/A", "Apple HomeView Space Gray", "Space Gray"),
+            ("MDH34LL/A", "Apple HomeView Starlight", "Starlight"),
+            ("MDH44LL/A", "Apple HomeView Rose Pink", "Rose Pink"),
+            ("MDV64LL/A", "Apple HomeView (Wall Mounted) Silver", "Silver"),
+            ("MDV74LL/A", "Apple HomeView (Wall Mounted) Space Gray", "Space Gray"),
+        ]
+    );
+    assert!(
+        products
+            .iter()
+            .all(|p| p.category == Category::Home && p.family == "homeview")
+    );
+
+    // 离线快照必须和在线解析结果一致，否则刷新前后同一零件号会换名字。
+    let catalog = Catalog::new();
+    for product in &products {
+        let offline = catalog.product_by_part("en_US", &product.part_number).unwrap();
+        assert_eq!(offline.title, product.title);
+        assert_eq!(offline.color, product.color);
+    }
+}
+
+#[test]
+fn home_discovery_only_accepts_homeview_pages() {
+    let region = region_by_locale("en_US").unwrap();
+    let html = br#"
+      <a href='/shop/buy-home/apple-homeview'>HomeView</a>
+      <a href='https://www.apple.com/shop/buy-home/apple-homeview/apple-homeview-wall-mounted-space-gray'>SKU</a>
+      <a href='/shop/buy-home/homepod'>HomePod uses a different page shape</a>
+      <a href='/ca/shop/buy-home/apple-homeview'>Wrong region</a>
+    "#;
+    assert_eq!(
+        parse_family_links(html, region, Category::Home).unwrap(),
+        vec!["apple-homeview"]
+    );
+}

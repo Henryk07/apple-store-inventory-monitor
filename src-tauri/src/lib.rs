@@ -350,7 +350,9 @@ fn list_regions() -> Vec<RegionDto> {
 
 #[tauri::command]
 fn list_categories() -> Vec<CategoryDto> {
-    [Category::Iphone]
+    // 北美 / 中东版只上架 iPhone 与美国站的 Apple HomeView；界面再按所选地区
+    // 实际有没有该品类的商品过滤，加拿大、阿联酋不会看到空的 Home。
+    [Category::Iphone, Category::Home]
         .iter()
         .map(|c| CategoryDto {
             value: *c,

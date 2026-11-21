@@ -213,6 +213,10 @@ async fn 能从官网抓到最新型号() {
         .expect("构造 http 客户端失败");
 
     for category in Category::ALL {
+        // Home（Apple HomeView）只接入美国站；中国大陆没有这个品类的购买页。
+        if region.families_in(*category).next().is_none() {
+            continue;
+        }
         let before = catalog
             .products("zh_CN")
             .map(|p| p.iter().filter(|p| p.category == *category).count())
