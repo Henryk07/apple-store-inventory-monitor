@@ -10,15 +10,15 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases/download/v1.0.28-us.1/Apple-Store-Inventory-Monitor-US-macOS-universal-1.0.28.dmg">
+  <a href="https://github.com/Henryk07/apple-store-inventory-monitor/releases/download/v2.0.0-us.1/Apple-Store-Inventory-Monitor-US-macOS-universal-2.0.0.dmg">
     <img src="docs/readme/download.svg" width="256" height="48" alt="下载 macOS 通用 DMG">
   </a>
 </p>
 
 <p align="center">
   <a href="#开始使用">开始使用</a> ·
-  <a href="https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases">版本记录</a> ·
-  <a href="https://www.threads.com/@realtimyry">Threads @realtimyry</a>
+  <a href="https://github.com/Henryk07/apple-store-inventory-monitor/releases">版本记录</a> ·
+  <a href="https://github.com/Henryk07">GitHub @Henryk07</a>
 </p>
 
 <p align="center">
@@ -44,7 +44,7 @@
 
 果到雷达会按设定间隔查询你选中的门店与型号。Apple 明确返回可取货时，可以播放提示音、把消息推送到 iPhone，或打开对应国家的购物袋和商品页。你继续在 Apple 官网确认并完成购买。
 
-这是由 **[yuanruoyu515](https://github.com/yuanruoyu515)** 维护的地区修改版，基于 **[suversal 的果到雷达 v1.0.26](https://github.com/suversal/apple-store-inventory-monitor/tree/v1.0.26)** 继续适配。现有用户可以覆盖升级，保留原来的监控、Bark 与声音设置。
+这是由 **[Henryk07](https://github.com/Henryk07)** 维护的 fork，fork 自 **[yuanruoyu515 的美加阿版](https://github.com/yuanruoyu515/apple-store-inventory-monitor)**；后者基于 **[suversal 的果到雷达 v1.0.26](https://github.com/suversal/apple-store-inventory-monitor/tree/v1.0.26)** 适配美国、加拿大和阿联酋。本 fork 在此基础上新增美国站 **Apple HomeView** 监控。现有用户可以覆盖升级，保留原来的监控、Bark 与声音设置。
 
 - **多门店、多型号一起看。** 按州、省、酋长国、城市或店名搜索，多选后一次添加；美国、加拿大和阿联酋的监控可以共存。
 - **提醒送到你需要的地方。** 支持电脑提示音、Bark 手机推送和页面跳转，也能给某个型号单独设置 Bark 地址。只想收到一次提醒，可开启「到货后暂停监控」。
@@ -111,24 +111,24 @@
 
 升级时，先从菜单栏完全退出旧版，再替换同名 App。为兼容旧版，应用文件名仍是 `Apple Store Inventory Monitor US.app`；窗口名称为「果到雷达 · 美加阿版」。
 
-当前应用版本为 **1.0.28**，Release 标签为 **v1.0.28-us.1**。发布页同时提供对应源码、安装说明和 SHA-256 校验文件。请从本仓库下载修改版，上游安装包不包含本版的三国适配。
+当前应用版本为 **2.0.0**，Release 标签为 **v2.0.0-us.1**，发布在 [Henryk07 的 Releases](https://github.com/Henryk07/apple-store-inventory-monitor/releases/latest)；发布页同时提供对应源码、安装说明和 SHA-256 校验文件。v1.0.28-us.1 及更早版本（不含 HomeView）由 yuanruoyu515 发布，见[其 Releases](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases)。上游安装包不包含本版的三国适配。
 
 ### 校验安装包
 
-在本版 [Release 的 Assets](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases/tag/v1.0.28-us.1) 中：
+在本版 [Release 的 Assets](https://github.com/Henryk07/apple-store-inventory-monitor/releases/tag/v2.0.0-us.1) 中：
 
 | 附件 | 用途 |
 | :--- | :--- |
-| `Apple-Store-Inventory-Monitor-US-macOS-universal-1.0.28.dmg` | 普通用户下载的安装镜像 |
+| `Apple-Store-Inventory-Monitor-US-macOS-universal-2.0.0.dmg` | 普通用户下载的安装镜像 |
 | `SHA256SUMS.txt` | 安装包、源码与说明的 SHA-256 校验值 |
 | `RELEASE-NOTES.md` | 本次更新和升级说明 |
-| `Source-v1.0.28-us.1.zip` | 与本次发布对应的源码归档 |
+| `Source-v2.0.0-us.1.zip` | 与本次发布对应的源码归档 |
 
 需要校验时，把 DMG 和 `SHA256SUMS.txt` 下载到同一个目录。在终端进入该目录，例如：
 
 ```sh
 cd ~/Downloads
-shasum -a 256 Apple-Store-Inventory-Monitor-US-macOS-universal-1.0.28.dmg
+shasum -a 256 Apple-Store-Inventory-Monitor-US-macOS-universal-2.0.0.dmg
 ```
 
 将输出的完整校验值与 `SHA256SUMS.txt` 中 **DMG 对应的那一行**比较，两者应完全一致。GitHub 自动生成的 `Source code` 压缩包是源码，不是可直接打开的 App。
@@ -575,7 +575,7 @@ Bark 地址和 Clash 控制接口密钥会以明文保存在本机设置中。�
 <details>
 <summary>找不到安装包，或下载后只有源代码</summary>
 
-打开本仓库 [Releases](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases)，进入 `v1.0.28-us.1` 并展开 Assets，下载文件名含 `macOS-universal` 的 DMG。GitHub 的 `Code → Download ZIP` 和 `Source code` 都是源码。
+打开本仓库 [Releases](https://github.com/Henryk07/apple-store-inventory-monitor/releases)，进入 `v2.0.0-us.1` 并展开 Assets，下载文件名含 `macOS-universal` 的 DMG。GitHub 的 `Code → Download ZIP` 和 `Source code` 都是源码。
 
 不要下载上游的安装包覆盖本版。上游并不包含本版的美国、加拿大、阿联酋目录和独立配置适配。
 
@@ -688,7 +688,7 @@ Bark 地址和 Clash 控制接口密钥会以明文保存在本机设置中。�
 <details>
 <summary>如何更新到下一版</summary>
 
-本版从 [yuanruoyu515 的 Releases](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases)手动下载。完全退出旧版，打开新的通用 DMG，把 App 拖到 Applications 并替换，然后重新打开、测试提醒和开始监控。
+本版从 [Henryk07 的 Releases](https://github.com/Henryk07/apple-store-inventory-monitor/releases)手动下载。完全退出旧版，打开新的通用 DMG，把 App 拖到 Applications 并替换，然后重新打开、测试提醒和开始监控。
 
 上游的应用内自动下载安装没有在本版启用，避免升级时覆盖三国适配。发布页的源码标签、Actions 记录和公开安装包也要分开看；当前可下载内容以正式 Release 的 Assets 为准。
 
@@ -721,7 +721,7 @@ pnpm generate:icons
 需要 Rust 1.90+、Node.js 24、pnpm 和 Xcode Command Line Tools。
 
 ```sh
-git clone --branch us-edition https://github.com/yuanruoyu515/apple-store-inventory-monitor.git
+git clone --branch us-edition https://github.com/Henryk07/apple-store-inventory-monitor.git
 cd apple-store-inventory-monitor
 pnpm install --frozen-lockfile
 pnpm generate:regions
@@ -815,7 +815,7 @@ v1.0.27 发布前，342 项 Rust 测试分别在 Apple Silicon 和 Intel（Roset
 
 数据生成使用已提交的快照，不要求构建时访问 Apple。`pnpm generate:regions` 生成三国目录；维护者可用 `pnpm refresh:ca`、`pnpm refresh:ae` 与 `scripts/refresh-us-stores.mjs` 核对相应官方数据。
 
-[更新记录](CHANGELOG.md) / [完整 Release](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases)
+[更新记录](CHANGELOG.md) / [完整 Release](https://github.com/Henryk07/apple-store-inventory-monitor/releases)
 
 ### 目录维护命令
 
@@ -868,9 +868,9 @@ scripts/                   地区数据维护与通用 DMG 打包
 
 <a id="反馈问题"></a>
 
-修改版维护：[GitHub @yuanruoyu515](https://github.com/yuanruoyu515) / [Threads @realtimyry](https://www.threads.com/@realtimyry)。反馈请附 App 版本、Mac 芯片、国家、门店编号、型号与相关日志，隐去 BarkKey 和个人信息。
+修改版维护：[GitHub @Henryk07](https://github.com/Henryk07)。反馈请附 App 版本、Mac 芯片、国家、门店编号、型号与相关日志，隐去 BarkKey 和个人信息。
 
-问题请提交到[本版 Issues](https://github.com/yuanruoyu515/apple-store-inventory-monitor/issues)。下面的信息可以直接复制后填写：
+问题请提交到[本版 Issues](https://github.com/Henryk07/apple-store-inventory-monitor/issues)。下面的信息可以直接复制后填写：
 
 ```text
 App 版本：
@@ -887,6 +887,6 @@ iPhone 型号、容量、颜色与完整料号：
 
 Bark、Clash 与部分操作、排错说明沿用并适配上游文档，本版差异以本页为准。`README_UPSTREAM.md` 保留上游原文，涉及其他平台、品类、地区或自动结账的章节不表示本版提供这些功能。
 
-本项目基于 [suversal/apple-store-inventory-monitor](https://github.com/suversal/apple-store-inventory-monitor) 修改，更早来源包括 [ENCHIGO/apple-pickup-watcher](https://github.com/ENCHIGO/apple-pickup-watcher) 与 [hteen/apple-store-helper](https://github.com/hteen/apple-store-helper)。感谢原作者与贡献者。上游文档保存在 [README_UPSTREAM.md](README_UPSTREAM.md)。
+本项目 fork 自 [yuanruoyu515/apple-store-inventory-monitor](https://github.com/yuanruoyu515/apple-store-inventory-monitor)（美加阿版，感谢 yuanruoyu515 的地区适配），后者基于 [suversal/apple-store-inventory-monitor](https://github.com/suversal/apple-store-inventory-monitor) 修改，更早来源包括 [ENCHIGO/apple-pickup-watcher](https://github.com/ENCHIGO/apple-pickup-watcher) 与 [hteen/apple-store-helper](https://github.com/hteen/apple-store-helper)。感谢原作者与贡献者。上游文档保存在 [README_UPSTREAM.md](README_UPSTREAM.md)。
 
 继续按 **[GPL-3.0-or-later](LICENSE)** 发布，保留原作者署名、许可和 [修改声明](NOTICE)。本项目不是 Apple 官方软件，与 Apple Inc. 没有隶属或授权关系。

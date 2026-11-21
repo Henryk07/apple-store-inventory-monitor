@@ -853,7 +853,7 @@ struct UpdateInfo {
 /// 抢购当口挂着的程序，自作主张地下载、替换、重启，正好会赶上最不该被打断的时刻。
 #[tauri::command]
 async fn check_for_update() -> Result<Option<UpdateInfo>, String> {
-    Err("修改版请从 yuanruoyu515 的 GitHub Releases 手动下载更新".into())
+    Err("修改版请从 Henryk07 的 GitHub Releases 手动下载更新".into())
 }
 
 /// The fork uses manual, region-compatible releases only.

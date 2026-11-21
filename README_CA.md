@@ -1,8 +1,8 @@
-> 当前版本为 **v1.0.28-us.1**，已基于上游 v1.0.26 更新，支持美国、加拿大和阿联酋。安装与当前查询行为以 [README.md](README.md) 为准。下文保留先前版本的地区数据来源及实现记录；旧的 fulfillment 取货路径已换成 `shop/retail/pickup-message`，请求调度与 541 处理已更新。
+> 本仓库是 [Henryk07](https://github.com/Henryk07) 维护的 fork（fork 自 [yuanruoyu515 的美加阿版](https://github.com/yuanruoyu515/apple-store-inventory-monitor)），自 v2.0.0-us.1 起新增美国站 Apple HomeView。基于上游 v1.0.26，支持美国、加拿大和阿联酋。安装与当前查询行为以 [README.md](README.md) 为准。下文保留先前版本的地区数据来源及实现记录；旧的 fulfillment 取货路径已换成 `shop/retail/pickup-message`，请求调度与 541 处理已更新。
 
 # 果到雷达 · 加拿大支持 🇨🇦
 
-从 **v1.0.9-us.1** 开始，同一个 macOS 安装包可监控美国与加拿大。下载请用 [yuanruoyu515 的 Releases](https://github.com/yuanruoyu515/apple-store-inventory-monitor/releases/latest)，不要下载上游原版。保留 `US` 文件名是为了兼容升级，新版窗口标题为「果到雷达 · 美加版」。
+从 **v1.0.9-us.1** 开始，同一个 macOS 安装包可监控美国与加拿大。下载请用 [Henryk07 的 Releases](https://github.com/Henryk07/apple-store-inventory-monitor/releases/latest)，不要下载上游原版。保留 `US` 文件名是为了兼容升级，新版窗口标题为「果到雷达 · 美加版」。
 
 ## 加拿大怎么用
 
@@ -64,4 +64,4 @@ pnpm tauri build --bundles app
 
 维护者需要重新核对官方数据时运行 `pnpm refresh:ca`，随后运行 `pnpm generate:ca` 并检查 diff、测试及真实查询。刷新脚本只解析公开 JSON，不执行网页脚本；生成脚本拒绝空目录、重复料号及非加拿大 SKU。
 
-来源与许可见 [NOTICE](NOTICE)、[LICENSE](LICENSE)。本修改版由 [yuanruoyu515](https://github.com/yuanruoyu515) 维护，反馈可联系 [Threads @realtimyry](https://www.threads.com/@realtimyry)。
+来源与许可见 [NOTICE](NOTICE)、[LICENSE](LICENSE)。本 fork 由 [Henryk07](https://github.com/Henryk07) 维护，问题请提交到[本仓库 Issues](https://github.com/Henryk07/apple-store-inventory-monitor/issues)；加拿大支持原由 [yuanruoyu515](https://github.com/yuanruoyu515) 完成。
